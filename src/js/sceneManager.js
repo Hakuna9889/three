@@ -1,4 +1,5 @@
-import { Scene, PerspectiveCamera, WebGLRenderer, Clock } from 'three';
+import * as THREE from 'three';
+import 'three/examples/js/controls/OrbitControls';
 import TWEEN from '@tweenjs/tween.js';
 import { qs, $on } from './helpers';
 import { trackOriginalOpacities } from './three.animation';
@@ -10,8 +11,10 @@ import { trackOriginalOpacities } from './three.animation';
 * @constructor
 */
 export default function SceneManager(selector = '#ThreeJS') {
+
+  console.log('OrbitControls', THREE);
 	this.container = qs(selector);
-	this.scene = new Scene();
+  this.scene = new THREE.Scene();
 	this.updates = [];
 }
 
@@ -29,14 +32,17 @@ SceneManager.prototype.create = function (callback = () => {}) {
 	const NEAR = 0.1;
 	const FAR = 10000;
 
-	this.camera = new PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+  this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+
+  this.controls = new THREE.OrbitControls(this.camera);
+  this.camera.position.set(0, 0, 300);
 	this.camera.updateProjectionMatrix();
-	this.camera.position.set(0, 0, 10);
+  this.controls.update();
 	this.scene.add(this.camera);
 
-	this.clock = new Clock();
+  this.clock = new THREE.Clock();
 
-	this.renderer = new WebGLRenderer({ alpha: true, antialias: window.devicePixelRatio });
+  this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: window.devicePixelRatio });
 
 	this.renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	this.renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
