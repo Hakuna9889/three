@@ -14,7 +14,7 @@ Dive straight into building Three.js projects using ES6 and React for overlaying
 ## Quick Overview
 
 ```sh
-git clone https://github.com/lachlantweedie/react-threejs-es6-boilerplate.git my-new-project
+git clone https://github.com/Hakuna9889/three.git my-new-project
 
 yarn install
 npm start
