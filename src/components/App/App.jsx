@@ -3,6 +3,9 @@ import './styles.scss';
 import Three from '../Three/Three';
 import { $on } from '../../js/helpers';
 
+console.log('window', Window);
+console.log('window three', Window.THREE);
+
 class App extends Component {
 
   constructor() {

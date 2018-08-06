@@ -35,6 +35,8 @@ SceneManager.prototype.create = function (callback = () => {}) {
   this.camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
 
   this.controls = new THREE.OrbitControls(this.camera);
+  this.controls.minPolarAngle = Math.PI / 2;
+  this.controls.maxPolarAngle = Math.PI / 2;
   this.camera.position.set(0, 0, 300);
 	this.camera.updateProjectionMatrix();
   this.controls.update();

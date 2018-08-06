@@ -8,9 +8,9 @@ import { Tween, Easing } from '@tweenjs/tween.js';
  * @param  {[Vector3]} target          	[Target Vector3]
  * @param  {[Object]} options         	[The animation options for Tween.js]
  */
-export function animateVector3(vectorToAnimate, target, options = {}) {
-	options = setOptionDefaults(options);
-	tween(vectorToAnimate, { x: target.x, y: target.y, z: target.z }, options);
+export function animateVector3(vectorToAnimate, options = {}) {
+  options = setOptionDefaults(options);
+  tween(vectorToAnimate, { y: vectorToAnimate.y + (Math.PI * 2) }, options);
 }
 
 /**
@@ -22,21 +22,21 @@ export function animateVector3(vectorToAnimate, target, options = {}) {
  */
 export function fade(mesh, direction = 'in', options = {}) {
 
-	options = setOptionDefaults(options);
+  options = setOptionDefaults(options);
 
-    const current = { percentage: direction === 'in' ? 1 : 0 };
-	const mats = mesh.material.materials ? mesh.material.materials : [mesh.material];
-	const originals = mesh.userData.originalOpacities ? mesh.userData.originalOpacities : [1];
-	const { update } = options;
+  const current = { percentage: direction === 'in' ? 1 : 0 };
+  const mats = mesh.material.materials ? mesh.material.materials : [mesh.material];
+  const originals = mesh.userData.originalOpacities ? mesh.userData.originalOpacities : [1];
+  const { update } = options;
 
-	options.update = () => {
-		for (var i = 0; i < mats.length; i += 1) {
-			mats[i].opacity = originals[i] * current.percentage;
-		}
-		if (update) update();
-	};
+  options.update = () => {
+    for (var i = 0; i < mats.length; i += 1) {
+      mats[i].opacity = originals[i] * current.percentage;
+    }
+    if (update) update();
+  };
 
-	tween(current, { percentage: direction === 'in' ? 0 : 1 }, options);
+  tween(current, { percentage: direction === 'in' ? 0 : 1 }, options);
 
 }
 
@@ -52,15 +52,15 @@ export function fade(mesh, direction = 'in', options = {}) {
  */
 export function trackOriginalOpacities(mesh) {
 
-    const opacities = [];
-	const materials = mesh.material.materials ? mesh.material.materials : [mesh.material];
+  const opacities = [];
+  const materials = mesh.material.materials ? mesh.material.materials : [mesh.material];
 
-	for (var i = 0; i < materials.length; i += 1) {
-         materials[i].transparent = true;
-         opacities.push(materials[i].opacity);
-    }
+  for (var i = 0; i < materials.length; i += 1) {
+    materials[i].transparent = true;
+    opacities.push(materials[i].opacity);
+  }
 
-    mesh.userData.originalOpacities = opacities;
+  mesh.userData.originalOpacities = opacities;
 
 }
 
@@ -73,20 +73,23 @@ export function trackOriginalOpacities(mesh) {
  * @param  {[type]} options [Tween options]
  */
 function tween(current, targets, options) {
-	const tweenVector3 = new Tween(current)
-        .to(targets, options.duration)
-        .easing(options.easing)
-		.yoyo(options.yoyo)
-		.repeat(options.repeat)
-		.delay(options.delay)
-        .onUpdate((d) => {
-            if (options.update) options.update(d);
-         })
-        .onComplete(() => {
-          if (options.callback) options.callback();
-        });
+  console.log('options', options);
+  const tweenVector3 = new Tween(current)
+    .to(targets, options.duration)
+    .easing(Easing.Back.InOut)
+    .delay(options.delay)
+    .repeatDelay(options.repeatDelay)
+    .repeat(options.repeat)
+    .onUpdate((d) => {
+      if (options.update) options.update(d);
+    })
+    .onComplete(() => {
+      if (options.callback) options.callback();
+    });
 
-    tweenVector3.start();
+  console.log('tweenVector3', tweenVector3);
+
+  tweenVector3.start();
 }
 
 /**
@@ -95,10 +98,10 @@ function tween(current, targets, options) {
  * @param {[Object]} options - list of options
  */
 function setOptionDefaults(options) {
-	options.duration = options.duration || 2000;
-	options.easing = options.easing || Easing.Linear.None;
-	options.yoyo = options.yoyo || false;
-	options.repeat = options.repeat || 0;
-	options.delay = options.delay || 0;
-	return options;
+  options.duration = options.duration || 2000;
+  options.easing = options.easing || Easing.Linear.None;
+  options.yoyo = options.yoyo || false;
+  options.repeat = options.repeat || 0;
+  options.delay = options.delay || 0;
+  return options;
 }
