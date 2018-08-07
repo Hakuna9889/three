@@ -76,7 +76,7 @@ function tween(current, targets, options) {
   console.log('options', options);
   const tweenVector3 = new Tween(current)
     .to(targets, options.duration)
-    .easing(Easing.Back.InOut)
+    .easing(Easing.Exponential.InOut)
     .delay(options.delay)
     .repeatDelay(options.repeatDelay)
     .repeat(options.repeat)

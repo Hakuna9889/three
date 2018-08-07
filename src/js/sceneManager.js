@@ -1,9 +1,7 @@
-import * as THREE from 'three';
 import 'three/examples/js/controls/OrbitControls';
 import TWEEN from '@tweenjs/tween.js';
 import { qs, $on } from './helpers';
 import { trackOriginalOpacities } from './three.animation';
-
 
 /**
 * Creates a new SceneManager instance

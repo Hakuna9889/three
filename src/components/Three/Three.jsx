@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import * as THREE from 'three';
 import 'three/examples/js/loaders/OBJLoader';
 import 'three/examples/js/modifiers/SubdivisionModifier';
 import { $on } from '../../js/helpers';
@@ -98,14 +97,14 @@ class Three extends Component {
       var mesh = new THREE.Mesh(smooth, material);
       sceneManager.add(mesh);
 
-      animate(mesh, 3000);
+      animate(mesh, 1500);
 
       function animate(obj, dur) {
         animateVector3(obj.rotation, {
           duration: dur,
           yoyo: false,
           delay: 500,
-          repeatDelay: 1000,
+          repeatDelay: 1500,
           repeat: Infinity,
         });
       }
